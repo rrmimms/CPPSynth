@@ -9,6 +9,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "Synth.h"
 
 //==============================================================================
 /**
@@ -20,7 +21,7 @@ private:
   void splitBufferByEvents(juce::AudioBuffer<float> &buffer, juce::MidiBuffer &midiMessages);
   void handleMIDI(uint8_t data0, uint8_t datal, uint8_t data2);
   void render(juce::AudioBuffer<float>& buffer, int sampleCount, int bufferOffset);
-  
+  Synth synth;
 
 public:
   //==============================================================================
@@ -59,6 +60,8 @@ public:
   //==============================================================================
   void getStateInformation(juce::MemoryBlock &destData) override;
   void setStateInformation(const void *data, int sizeInBytes) override;
+
+  void reset() override;
 
 private:
   //==============================================================================

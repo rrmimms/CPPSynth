@@ -95,12 +95,17 @@ void BoglichJX11AudioProcessor::prepareToPlay(double sampleRate, int samplesPerB
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+
+    synth.allocateResources(sampleRate, samplesPerBlock);
+    reset();
+
 }
 
 void BoglichJX11AudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
+    synth.deallocateResources();
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -190,9 +195,7 @@ void BoglichJX11AudioProcessor::splitBufferByEvents()
 
 void BoglichJX11AudioProcessor::handleMIDI(uint8_t data0, uint8_t data1, uint8_t data2)
 {
-    char s[16];
-    snprintf(s, 16, "%02hhX %02hhX %02hhX", data0, data1, data2);
-    DBG(s);
+    synth.midiMessage(data0, data1, data2);
 }
 
 void BoglichJX11AudioProcessor::render(juce::AudioBuffer<float> &buffer, int sampleCOunt, int bufferOffset)
@@ -208,6 +211,11 @@ bool BoglichJX11AudioProcessor::hasEditor() const
 juce::AudioProcessorEditor *BoglichJX11AudioProcessor::createEditor()
 {
     return new BoglichJX11AudioProcessorEditor(*this);
+}
+
+void BoglichJX11AudioProcessor::reset()
+{
+    synth.reset();
 }
 
 //==============================================================================
