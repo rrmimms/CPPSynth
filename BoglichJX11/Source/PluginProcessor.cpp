@@ -200,6 +200,14 @@ void BoglichJX11AudioProcessor::handleMIDI(uint8_t data0, uint8_t data1, uint8_t
 
 void BoglichJX11AudioProcessor::render(juce::AudioBuffer<float> &buffer, int sampleCOunt, int bufferOffset)
 {
+
+    float* outputBuffers[2] = {nullptr, nullptr};
+    outputBuffers[0] = buffer.getWritePointer(0) + bufferOffset;
+
+    if (getTotalNumOutputChannels() > 1) {
+        outputBuffers[1] = buffer.getWritePointer(1) + bufferOffset;
+    }
+    synth.render(outputBuffers, sampleCount);
 }
 
 //==============================================================================

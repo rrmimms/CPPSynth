@@ -1,4 +1,5 @@
 #include "Synth.h"
+#include "Utils.h"
 
 Synth::Synth()
 {
@@ -17,10 +18,34 @@ void Synth::deallocateResources()
 void Synth::reset()
 {
     voice.reset();
+    noiseGen.reset();
 }
 
 void Synth::render(float **outputBuffers, int sampleCount)
 {
+    float *outputBufferLeft = outputBuffers[0];
+    float *outputBufferRight = outputBuffers[1];
+
+    for (int sample = 0; sample < sampleCount; ++sample)
+    {
+        float noise = noiseGen.nextValue();
+
+        float output = 0.0f;
+
+        if (voice.note > 0)
+        {
+            output = noise * (voice.velocity / 127.0f) * 0.5f;
+        }
+
+        outputBufferLeft[sample] = output;
+        if (outputBufferRight != nullptr)
+        {
+            outputbufferRight[sample] = output;
+        }
+    }
+
+    protectYourEars(outputBufferLeft, sampleCount);
+    protectYourEars(outputBufferRight, sampleCount);
 }
 
 void Synth::midiMessage(uint8_t data0, uint8_t data1, uint8_t data2)
