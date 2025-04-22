@@ -158,6 +158,31 @@ void BoglichJX11AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
     }
 }
 
+void BoglichJX11AudioProcessor::splitBufferByEvents(){
+
+    int bufferOffset = 0;
+
+    for (const auto metadata : midiMessages){
+        int samplesThisSegment = metadata.samplePosition - bufferOffset;
+        if (samplesThisSegment > 0){
+            render(buffer, samplesThisSegment, bufferOffset);
+            bufferOffset += samplesThisSegment;
+        }
+
+        if (metadata.numBytes <= 3){
+            uint8_t data1 = (metadata.numBytes >= 2) ? metadata.data[1] : 0;
+            uint8_t data2 = (metadata.numBytes == 3) ? metadata.data[2] : 0;
+            handleMIDI(metadata.data[0], data1, data2);
+        }
+    }
+
+    int samplesLastSegment = buffer.getNumSamples() - bufferOffset;
+    if (samplesLastSegment > 0){
+        render(buffer, samplesLastSegment, bufferOffset);
+    }
+    midiMessages.clear();
+}
+
 //==============================================================================
 bool BoglichJX11AudioProcessor::hasEditor() const
 {
