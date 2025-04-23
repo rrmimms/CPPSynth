@@ -670,6 +670,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\Synth.cpp">
+      <Filter>BoglichJX11\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\PluginProcessor.cpp">
       <Filter>BoglichJX11\Source</Filter>
     </ClCompile>

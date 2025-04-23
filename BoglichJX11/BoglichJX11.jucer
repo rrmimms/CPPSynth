@@ -6,6 +6,7 @@
               pluginFormats="buildStandalone,buildVST3" pluginManufacturerCode="BLCH">
   <MAINGROUP id="RmfGO3" name="BoglichJX11">
     <GROUP id="{3C619DC2-732E-C7D7-5498-64025BDF63F4}" name="Source">
+      <FILE id="CfPA0W" name="Synth.cpp" compile="1" resource="0" file="Source/Synth.cpp"/>
       <FILE id="endiM1" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="GkE3C0" name="PluginProcessor.h" compile="0" resource="0"
